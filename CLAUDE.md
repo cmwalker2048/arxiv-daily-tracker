@@ -22,7 +22,7 @@ The tool runs on a daily schedule (08:00 Copenhagen time) and can also be trigge
 |-------|--------|--------|
 | Language | Python 3.10+ | User is proficient in Python |
 | arXiv data | arXiv API (`export.arxiv.org/api/query`) | Official, rate-limit compliant |
-| LLM | Zhipu AI API (`glm-4-flash`) | Free tier available, OpenAI-SDK-compatible, strong Chinese output |
+| LLM | OpenAI-compatible API (智谱/Mimo/etc.) | Configurable via `LLM_BASE_URL` + `config.yaml` |
 | PDF generation | `weasyprint` or `pandoc` | Decided at implementation time |
 | Scheduling | `schedule` library or system cron | Simple, cross-platform |
 | Email | Gmail SMTP + App Password | User has Gmail account |
@@ -120,7 +120,7 @@ for paper in papers:
 
 ### Security
 
-- `ZHIPU_API_KEY` must be set as a local environment variable — never hardcode or commit it
+- `LLM_API_KEY` and `LLM_BASE_URL` must be set as local environment variables — never hardcode or commit them
 - Use Gmail **App Password**, not the account password
 - Do not log API keys or email credentials at any log level
 

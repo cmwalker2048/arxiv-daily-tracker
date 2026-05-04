@@ -1,6 +1,6 @@
 # arXiv Daily Tracker
 
-> 每日自动抓取 arXiv `quant-ph` 新论文，智谱 AI 提炼中英双语摘要，通过 Obsidian 同步或邮件推送至研究者。
+> 每日自动抓取 arXiv `quant-ph` 新论文，LLM 深度提炼中英双语摘要，通过 Obsidian 同步或邮件推送至研究者。
 
 ---
 
@@ -8,7 +8,7 @@
 
 | 功能 | 说明 |
 |------|------|
-| **智谱 AI 提炼** | GLM-4-Flash 输出核心价值 + 高亮中英双语摘要，拒绝套话式总结 |
+| **LLM 深度提炼** | 输出核心价值 + 高亮中英双语摘要，拒绝套话式总结（支持 Mimo / 智谱等 OpenAI 兼容 API） |
 | **Obsidian 同步** | 自动推送 Markdown 到 Obsidian 知识库仓库，按年份归档 |
 | **邮件推送** | 支持 Gmail、Outlook、Yahoo 及任意 SMTP 服务器，SSL/STARTTLS/无加密三种模式 |
 | **智能归档** | 按年份分类存入 `arxiv/YYYY/`，标题即文件名 |
@@ -36,8 +36,10 @@ cp .env.example .env
 ```bash
 python main.py                      # 默认运行（抓取最新日期）
 python main.py --date 2026-04-09    # 指定日期
-python main.py --verbose            # 详细日志
+python main.py --max-results 10     # 限制抓取数量（测试/节省 API 调用）
 python main.py --no-email           # 仅生成报告，不发邮件
+python main.py --verbose            # 详细日志
+python main.py --version            # 查看版本号
 ```
 
 ---
@@ -84,7 +86,9 @@ email:
 ### SMTP 凭据（`.env`）
 
 ```dotenv
-ZHIPU_API_KEY=your_zhipu_api_key_here
+# LLM API（OpenAI 兼容）
+LLM_API_KEY=your_api_key_here
+LLM_BASE_URL=https://open.bigmodel.cn/api/paas/v4/
 
 # SMTP 邮箱凭据（支持任意邮件服务商）
 SMTP_USERNAME=you@gmail.com
@@ -102,10 +106,10 @@ NOTIFY_MODE=obsidian
 ```yaml
 arxiv:
   categories: [quant-ph]       # arXiv 分类，支持多个
-  max_results: null            # null = 全量抓取，不设上限
+  max_results: null            # 抓取上限；null = 全量，设整数可限制数量
 
 llm:
-  model: glm-4-flash           # 智谱 AI 模型
+  model: MiMo-V2.5-Pro        # 模型名（需与 LLM_BASE_URL 匹配）
   max_retries: 3               # API 调用失败重试次数
 
 schedule:
@@ -142,7 +146,8 @@ output/YYYY-MM-DD/
 
 | Secret 名称 | 说明 |
 |-------------|------|
-| `ZHIPU_API_KEY` | 智谱 AI API 密钥 |
+| `LLM_API_KEY` | LLM API 密钥（OpenAI 兼容） |
+| `LLM_BASE_URL` | LLM API 地址（如 `https://open.bigmodel.cn/api/paas/v4/` 或 `https://token-plan-cn.xiaomimimo.com/anthropic`） |
 | `SMTP_USERNAME` | SMTP 邮箱地址（发件人） |
 | `SMTP_PASSWORD` | SMTP 密码或 App Password |
 | `SMTP_RECIPIENTS` | 收件人邮箱（多个用逗号分隔），覆盖 config.yaml 中的 recipients |

@@ -55,6 +55,6 @@ Where `YYYY-MM-DD` is the resolved `target_date`, **not** the wall-clock date yo
 
 ## Prerequisites
 
-- `.env` with `ZHIPU_API_KEY` and Gmail App Password (see `.env.example`)
+- `.env` with `LLM_API_KEY`, `LLM_BASE_URL` and Gmail App Password (see `.env.example`)
 - `config.yaml` present in project root (categories, SMTP host/port, recipients)
 - `pandoc` + `xelatex` installed on `$PATH` for PDF generation; falls back to sending the `.md` if PDF export fails

@@ -59,10 +59,10 @@ Per-paper Markdown structure:
 ### LLM API
 
 - **Zhipu AI API** (`open.bigmodel.cn`)
-- Model: `glm-4-flash` (free tier available, strong Chinese output)
+- Model: configurable via `config.yaml` (default `MiMo-V2.5-Pro`; also supports `glm-4-flash` etc.)
 - SDK: fully compatible with the OpenAI Python SDK (`openai` package with custom `base_url`)
 - Used for: title translation + structured abstract analysis (Phase 1); relevance scoring (Phase 2)
-- API key stored in local environment variable `ZHIPU_API_KEY` (never committed to git)
+- API key and base URL stored in local environment variables `LLM_API_KEY` / `LLM_BASE_URL` (never committed to git)
 
 ### arXiv Data Source
 

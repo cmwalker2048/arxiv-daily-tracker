@@ -25,7 +25,7 @@ from fetcher.arxiv_fetcher import Paper
 
 logger = logging.getLogger(__name__)
 
-ZHIPU_BASE_URL = "https://open.bigmodel.cn/api/paas/v4/"
+DEFAULT_BASE_URL = "https://open.bigmodel.cn/api/paas/v4/"
 REQUEST_TIMEOUT = 45  # 秒；适当延长，减少高负载下的误超时
 
 # System Prompt：以系统角色注入铁律约束，权重高于 user 消息。
@@ -93,22 +93,27 @@ ANALYSIS_PROMPT_TEMPLATE = (
 
 def build_client(model: str, max_retries: int) -> tuple[OpenAI, str, int]:
     """
-    构建 Zhipu AI 客户端。
+    构建 OpenAI 兼容的 LLM 客户端。
+
+    从环境变量读取 LLM_API_KEY 和 LLM_BASE_URL，
+    兼容智谱、小米 Mimo 等任何 OpenAI Chat Completions API 兼容服务。
 
     Args:
-        model:       模型名称，如 'glm-4-flash'。
+        model:       模型名称，如 'MiMo-V2.5-Pro'。
         max_retries: 最大重试次数。
 
     Returns:
         (client, model, max_retries) 三元组。
     """
-    api_key = os.environ["ZHIPU_API_KEY"]
+    api_key = os.environ["LLM_API_KEY"]
+    base_url = os.environ.get("LLM_BASE_URL", DEFAULT_BASE_URL)
     client = OpenAI(
         api_key=api_key,
-        base_url=ZHIPU_BASE_URL,
+        base_url=base_url,
         timeout=REQUEST_TIMEOUT,  # SDK 级 socket 超时，防止连接层无限挂起
         max_retries=0,            # 禁用 SDK 内置重试，避免与手动指数退避叠加导致无限循环
     )
+    logger.info(f"LLM 客户端已初始化：base_url={base_url} model={model}")
     return client, model, max_retries
 
 
