@@ -147,7 +147,7 @@ output/YYYY-MM-DD/
 | Secret 名称 | 说明 |
 |-------------|------|
 | `LLM_API_KEY` | LLM API 密钥（OpenAI 兼容） |
-| `LLM_BASE_URL` | LLM API 地址（如 `https://open.bigmodel.cn/api/paas/v4/` 或 `https://token-plan-cn.xiaomimimo.com/anthropic`） |
+| `LLM_BASE_URL` | LLM API 地址（如 `https://open.bigmodel.cn/api/paas/v4/` 或 `https://token-plan-cn.xiaomimimo.com/anthropic/v1`） |
 | `SMTP_USERNAME` | SMTP 邮箱地址（发件人） |
 | `SMTP_PASSWORD` | SMTP 密码或 App Password |
 | `SMTP_RECIPIENTS` | 收件人邮箱（多个用逗号分隔），覆盖 config.yaml 中的 recipients |
